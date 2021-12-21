@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  nexus:
+    image: sonatype/nexus3
+    ports:
+      - 127.0.0.1:4082:8081
+    volumes:
+      - data:/nexus-data
+
+  backup:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 0 2 * * 1" # monday at 2am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /mnt/nexusdata/blobs /mnt/nexusdata/keystores /mnt/nexusdata/dbbackups
+      RESTIC_BACKUP_ARGS: >-
+        --tag docker-nexus
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-last 4
+        --keep-weekly 4
+        --keep-monthly 4
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+    volumes:
+      - data:/mnt/nexusdata:ro
+
+  backup-prune:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      PRUNE_CRON: "0 0 3 * * 1" # monday at 3am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+
+volumes:
+  data:

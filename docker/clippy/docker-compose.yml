@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  clippy:
+    image: ghcr.io/luckperms/clippy
+    restart: unless-stopped
+    volumes:
+      - "data:/opt/clippy/data"
+      - "logs:/opt/clippy/logs"
+    environment:
+      DISCORD_BOT_TOKEN: ${BOT_TOKEN}
+      DISCORD_STAFF_ROLES: staff,helpful
+      DISCORD_GUILD: 241667244927483904
+      DISCORD_PATREON_CHANNEL: 533266318854455308
+      DISCORD_MEMBER_ROLE: 420316139986485250
+
+volumes:
+  data:
+  logs:

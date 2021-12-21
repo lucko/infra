@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    ports:
+      - 127.0.0.1:4081:8080
+    volumes:
+      - data:/var/jenkins_home
+
+  backup:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 0 2 * * 2" # tuesday at 2am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /mnt/jenkinsdata
+      RESTIC_BACKUP_ARGS: >-
+        --tag docker-jenkins
+        --exclude /mnt/jenkinsdata/tools
+        --exclude /mnt/jenkinsdata/workspace
+        --exclude /mnt/jenkinsdata/logs
+        --exclude /mnt/jenkinsdata/monitoring
+        --exclude /mnt/jenkinsdata/.m2
+        --exclude /mnt/jenkinsdata/.gradle
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-last 4
+        --keep-weekly 4
+        --keep-monthly 4
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+    volumes:
+      - data:/mnt/jenkinsdata:ro
+
+  backup-prune:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      PRUNE_CRON: "0 0 3 * * 2" # tuesday at 3am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+
+volumes:
+  data:

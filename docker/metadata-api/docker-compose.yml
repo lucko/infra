@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  metadata-api:
+    image: ghcr.io/luckperms/metadata-api
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4087:3000
+    environment:
+      METADATA_API_GITHUB_API_KEY: ${GITHUB_API_KEY}
+      METADATA_API_PATREON_API_KEY: ${PATREON_API_KEY}
+      METADATA_API_CROWDIN_API_KEY: ${CROWDIN_API_KEY}
+

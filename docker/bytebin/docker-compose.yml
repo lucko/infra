@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  bytebin:
+    image: ghcr.io/lucko/bytebin
+    command: ["java", "-Xmx2G", "-Xms2G", "-XX:+UseG1GC", "-jar", "bytebin.jar"]
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4084:8080
+    volumes:
+      - data:/opt/bytebin/content
+      - logs:/opt/bytebin/logs
+    environment:
+      BYTEBIN_MISC_KEYLENGTH: 10
+      BYTEBIN_MISC_COREPOOLSIZE: 16
+      BYTEBIN_CACHE_EXPIRY: 15 # minutes
+      BYTEBIN_CACHE_MAXSIZE: 300 # mb
+      BYTEBIN_CONTENT_EXPIRY: 10080 # minutes
+      BYTEBIN_CONTENT_EXPIRY_USERAGENTS: >-
+        spark-plugin=129600,
+        https://luckperms.net=60,
+        https://paste.lucko.me=259200,
+        https://pastebin.lucko.me=259200,
+        https://bytebin.lucko.me=259200
+      BYTEBIN_CONTENT_MAXSIZE: 10 # mb
+
+  backup:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "false"
+      BACKUP_CRON: "0 0 1 * * *" # every day at 1am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /bytebindata
+      # filter data directory to exclude short-lived content
+      # only backup stuff with an expiry >= 90 days
+      PRE_COMMANDS: |-
+        mkdir /bytebindata
+        bytebin-filter /mnt/bytebindata/ /bytebindata/ 7740000000
+      POST_COMMANDS_EXIT: |-
+        rm -rf /bytebindata/
+      RESTIC_BACKUP_ARGS: >-
+        --tag docker-bytebin
+        --ignore-inode
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-last 4
+        --keep-weekly 4
+        --keep-monthly 3
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+    volumes:
+      - data:/mnt/bytebindata:ro
+      - "/usr/local/bin/bytebin-filter:/usr/bin/bytebin-filter:ro"
+
+  backup-prune:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      PRUNE_CRON: "0 0 3 * * 3" # wednesday at 3am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+
+volumes:
+  data: {}
+  logs: {}
