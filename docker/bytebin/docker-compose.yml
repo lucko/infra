@@ -21,6 +21,7 @@ services:
         https://luckperms.net=60,
         https://paste.lucko.me=259200,
         https://pastebin.lucko.me=259200,
+        https://pastes.dev=259200,
         https://bytebin.lucko.me=259200
       BYTEBIN_CONTENT_MAXSIZE: 10 # mb
 
