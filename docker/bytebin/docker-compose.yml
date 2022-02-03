@@ -11,6 +11,7 @@ services:
       - data:/opt/bytebin/content
       - logs:/opt/bytebin/logs
     environment:
+      BYTEBIN_METRICS_ENABLED: "true"
       BYTEBIN_MISC_KEYLENGTH: 10
       BYTEBIN_MISC_COREPOOLSIZE: 16
       BYTEBIN_CACHE_EXPIRY: 15 # minutes
@@ -19,6 +20,7 @@ services:
       BYTEBIN_CONTENT_EXPIRY_USERAGENTS: >-
         spark-plugin=129600,
         https://luckperms.net=60,
+        luckperms/editor=60,
         https://paste.lucko.me=259200,
         https://pastebin.lucko.me=259200,
         https://pastes.dev=259200,
