@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  bytesocks:
+    image: ghcr.io/lucko/bytesocks
+    command: ["java", "-Xmx1G", "-Xms1G", "-XX:+UseG1GC", "-jar", "bytesocks.jar"]
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4089:8080
+    environment:
+      BYTESOCKS_MISC_KEYLENGTH: 15
+      BYTESOCKS_METRICS_ENABLED: "true"
