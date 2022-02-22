@@ -3,7 +3,7 @@ version: "3.8"
 services:
   bytebin:
     image: ghcr.io/lucko/bytebin
-    command: ["java", "-Xmx2G", "-Xms2G", "-XX:+UseG1GC", "-jar", "bytebin.jar"]
+    command: ["java", "-Xmx1G", "-Xms1G", "-XX:+UseG1GC", "-jar", "bytebin.jar"]
     restart: unless-stopped
     ports:
       - 127.0.0.1:4084:8080
@@ -14,8 +14,8 @@ services:
       BYTEBIN_METRICS_ENABLED: "true"
       BYTEBIN_MISC_KEYLENGTH: 10
       BYTEBIN_MISC_COREPOOLSIZE: 16
-      BYTEBIN_CACHE_EXPIRY: 15 # minutes
-      BYTEBIN_CACHE_MAXSIZE: 300 # mb
+      BYTEBIN_CACHE_EXPIRY: 10 # minutes
+      BYTEBIN_CACHE_MAXSIZE: 150 # mb
       BYTEBIN_CONTENT_EXPIRY: 10080 # minutes
       BYTEBIN_CONTENT_EXPIRY_USERAGENTS: >-
         spark-plugin=129600,

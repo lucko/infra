@@ -3,6 +3,8 @@ version: "3.8"
 services:
   nexus:
     image: sonatype/nexus3
+    environment:
+      MAX_HEAP: "500M"
     ports:
       - 127.0.0.1:4082:8081
     volumes:
