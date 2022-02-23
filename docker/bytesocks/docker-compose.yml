@@ -3,7 +3,7 @@ version: "3.8"
 services:
   bytesocks:
     image: ghcr.io/lucko/bytesocks
-    command: ["java", "-Xmx500M", "-XX:+UseG1GC", "-jar", "bytesocks.jar"]
+    command: ["java", "-Xmx300M", "-XX:+UseG1GC", "-jar", "bytesocks.jar"]
     restart: unless-stopped
     ports:
       - 127.0.0.1:4089:8080
