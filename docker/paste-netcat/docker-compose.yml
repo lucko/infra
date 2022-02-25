@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  paste-netcat:
+    image: ghcr.io/lucko/paste-netcat
+    ports:
+      - "1337:3000"
+    environment:
+      PN_PORT: 3000
+      PN_API_POST_URL: "https://api.pastes.dev/post"
+      PN_USER_AGENT: "paste-netcat"
+      PN_API_KEY: ${PASTE_NETCAT_API_TOKEN}
+      PN_POST_CONTENT_TYPE: "text/plain"
+      PN_FRONTEND_URL: "https://pastes.dev/"
