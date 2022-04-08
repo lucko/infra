@@ -37,9 +37,10 @@ services:
       # send metrics about backup status/size/filecount to prometheus
       POST_COMMANDS_SUCCESS: |-
         restic stats --json > stats.json
+        apk add --no-cache jq
         echo "restic_status 1" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
-        echo "restic_total_size $(cat stats.json | jq '.total_size')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
-        echo "restic_total_file_count $(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
+        echo "restic_total_size $$(cat stats.json | jq '.total_size')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
+        echo "restic_total_file_count $$(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
       POST_COMMANDS_FAILURE: |-
         echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
     networks:
