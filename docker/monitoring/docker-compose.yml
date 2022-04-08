@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3090:9090
+    networks:
+      - "default"
+      - "bytesocks_default"
+      - "bytebin_default"
+    extra_hosts:
+      - "node-exporter:host-gateway"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+  pushgateway:
+    image: prom/pushgateway
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3091:3000
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana:/var/lib/grafana
+      - grafana_config:/etc/grafana/provisioning/
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    restart: unless-stopped
+    privileged: true
+    command:
+      - '-housekeeping_interval=10s'
+      - '-docker_only=true'
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+volumes:
+  data:
+  grafana:
+  grafana_config:
+
+networks:
+  bytesocks_default:
+    external: true
+  bytebin_default:
+    external: true

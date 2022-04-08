@@ -55,6 +55,17 @@ services:
         --keep-monthly 3
       B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
       B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+      # send metrics about backup status/size/filecount to prometheus
+      POST_COMMANDS_SUCCESS: |-
+        restic stats --json > stats.json
+        echo "restic_status 1" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
+        echo "restic_total_size $(cat stats.json | jq '.total_size')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
+        echo "restic_total_file_count $(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
+      POST_COMMANDS_FAILURE: |-
+        echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
+    networks:
+      - "default"
+      - "monitoring_default"
     volumes:
       - data:/mnt/bytebindata:ro
       - "/usr/local/bin/bytebin-filter:/usr/bin/bytebin-filter:ro"
@@ -73,3 +84,7 @@ services:
 volumes:
   data: {}
   logs: {}
+
+networks:
+  monitoring_default:
+    external: true
