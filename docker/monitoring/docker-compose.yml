@@ -65,3 +65,6 @@ networks:
     external: true
   bytebin_default:
     external: true
+  metadata-api_default:
+    external: true
+
