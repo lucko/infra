@@ -22,6 +22,10 @@ scrape_configs:
   - job_name: "bytebin"
     static_configs:
     - targets: ["bytebin:8080"]
+  
+  - job_name: "metadata-api"
+    static_configs:
+    - targets: ["metadata-api:3000"]
 
   - job_name: "pushgateway"
     honor_labels: true

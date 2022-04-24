@@ -10,6 +10,7 @@ services:
       - "default"
       - "bytesocks_default"
       - "bytebin_default"
+      - "metadata-api_default"
     extra_hosts:
       - "node-exporter:host-gateway"
     volumes:
