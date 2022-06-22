@@ -25,6 +25,7 @@ services:
         https://pastebin.lucko.me=259200,
         https://pastes.dev=259200,
         paste-netcat=259200,
+        https://webui.adventure.kyori.net=259200,
         https://bytebin.lucko.me=259200
       BYTEBIN_RATELIMIT_APIKEYS: ${BYTEBIN_API_KEYS}
       BYTEBIN_CONTENT_MAXSIZE: 10 # mb
