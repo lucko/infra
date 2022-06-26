@@ -26,6 +26,10 @@ scrape_configs:
   - job_name: "metadata-api"
     static_configs:
     - targets: ["metadata-api:3000"]
+  
+  - job_name: "spark-metadata-api"
+    static_configs:
+    - targets: ["spark-metadata-api:3000"]
 
   - job_name: "pushgateway"
     honor_labels: true
