@@ -19,7 +19,7 @@ services:
       - 127.0.0.1:4088:3000
     networks:
       - "default"
-      - "monitoring_default"
+      - "jenkins_default"
     environment:
       METADATA_API_METRICS: "true"
       METADATA_API_JENKINS_URL: "http://jenkins:8080/"
