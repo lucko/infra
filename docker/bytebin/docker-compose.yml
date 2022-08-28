@@ -39,21 +39,13 @@ services:
       RESTIC_REPOSITORY: ${RESTIC_REPO}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       RESTIC_BACKUP_SOURCES: /bytebindata
-      # filter data directory to exclude short-lived content
-      # only backup stuff with an expiry >= 90 days
-      PRE_COMMANDS: |-
-        mkdir /bytebindata
-        bytebin-filter /mnt/bytebindata/ /bytebindata/ 7740000000
-      POST_COMMANDS_EXIT: |-
-        rm -rf /bytebindata/
       RESTIC_BACKUP_ARGS: >-
         --tag docker-bytebin
         --ignore-inode
         --verbose
       RESTIC_FORGET_ARGS: >-
-        --keep-last 4
-        --keep-weekly 4
-        --keep-monthly 3
+        --keep-last 2
+        --keep-weekly 2
       B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
       B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
       # send metrics about backup status/size/filecount to prometheus
@@ -69,8 +61,7 @@ services:
       - "default"
       - "monitoring_default"
     volumes:
-      - data:/mnt/bytebindata:ro
-      - "/usr/local/bin/bytebin-filter:/usr/bin/bytebin-filter:ro"
+      - data:/bytebindata:ro
 
   backup-prune:
     image: mazzolino/restic
