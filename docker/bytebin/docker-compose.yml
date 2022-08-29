@@ -10,12 +10,13 @@ services:
     volumes:
       - data:/opt/bytebin/content
       - logs:/opt/bytebin/logs
+      - db:/opt/bytebin/db
     environment:
       BYTEBIN_METRICS_ENABLED: "true"
       BYTEBIN_MISC_KEYLENGTH: 10
       BYTEBIN_MISC_COREPOOLSIZE: 16
-      BYTEBIN_CACHE_EXPIRY: 10 # minutes
-      BYTEBIN_CACHE_MAXSIZE: 150 # mb
+      BYTEBIN_CACHE_EXPIRY: 20 # minutes
+      BYTEBIN_CACHE_MAXSIZE: 300 # mb
       BYTEBIN_CONTENT_EXPIRY: 10080 # minutes
       BYTEBIN_CONTENT_EXPIRY_USERAGENTS: >-
         spark-plugin=129600,
@@ -29,55 +30,13 @@ services:
         https://bytebin.lucko.me=259200
       BYTEBIN_RATELIMIT_APIKEYS: ${BYTEBIN_API_KEYS}
       BYTEBIN_CONTENT_MAXSIZE: 10 # mb
-
-  backup:
-    image: mazzolino/restic
-    hostname: docker
-    environment:
-      RUN_ON_STARTUP: "false"
-      BACKUP_CRON: "0 0 1 * * *" # every day at 1am
-      RESTIC_REPOSITORY: ${RESTIC_REPO}
-      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
-      RESTIC_BACKUP_SOURCES: /bytebindata
-      RESTIC_BACKUP_ARGS: >-
-        --tag docker-bytebin
-        --ignore-inode
-        --verbose
-      RESTIC_FORGET_ARGS: >-
-        --keep-last 2
-        --keep-weekly 2
-      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
-      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
-      # send metrics about backup status/size/filecount to prometheus
-      POST_COMMANDS_SUCCESS: |-
-        restic stats --json > stats.json
-        apk add --no-cache jq
-        echo "restic_status 1" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
-        echo "restic_total_size $$(cat stats.json | jq '.total_size')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
-        echo "restic_total_file_count $$(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
-      POST_COMMANDS_FAILURE: |-
-        echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_bytebin
-    networks:
-      - "default"
-      - "monitoring_default"
-    volumes:
-      - data:/bytebindata:ro
-
-  backup-prune:
-    image: mazzolino/restic
-    hostname: docker
-    environment:
-      RUN_ON_STARTUP: "true"
-      PRUNE_CRON: "0 0 3 * * 3" # wednesday at 3am
-      RESTIC_REPOSITORY: ${RESTIC_REPO}
-      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
-      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
-      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+      BYTEBIN_STORAGE_S3: "true"
+      BYTEBIN_STORAGE_S3_BUCKET: ${BYTEBIN_STORAGE_S3_BUCKET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
 
 volumes:
   data: {}
   logs: {}
-
-networks:
-  monitoring_default:
-    external: true
+  db: {}
