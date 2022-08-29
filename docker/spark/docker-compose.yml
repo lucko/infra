@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  spark-metadata-api:
+    image: ghcr.io/lucko/spark-downloads-api
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4088:3000
+    networks:
+      - "default"
+      - "jenkins_default"
+    environment:
+      METADATA_API_METRICS: "true"
+      METADATA_API_JENKINS_URL: "http://jenkins:8080/"
+  
+  spark-json-service:
+    image: ghcr.io/lucko/spark2json
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4090:3000
+    environment:
+      BYTEBIN_API_KEY: ${SPARKJSON_BYTEBIN_API_KEY}
+
+  spark-thumbnail-service:
+    image: ghcr.io/lucko/spark-thumbnail-service
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4091:3000
+
+networks:
+  jenkins_default:
+    external: true
