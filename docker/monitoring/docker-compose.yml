@@ -11,6 +11,7 @@ services:
       - "bytesocks_default"
       - "bytebin_default"
       - "metadata-api_default"
+      - "spark_default"
     extra_hosts:
       - "node-exporter:host-gateway"
     volumes:
@@ -66,5 +67,7 @@ networks:
   bytebin_default:
     external: true
   metadata-api_default:
+    external: true
+  spark_default:
     external: true
 
