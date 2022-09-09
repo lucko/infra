@@ -72,4 +72,5 @@ networks:
     external: true
   spark_default:
     external: true
-
+  nexus_default:
+    external: true
