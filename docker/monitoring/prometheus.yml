@@ -33,6 +33,7 @@ scrape_configs:
   - job_name: "nexus"
     scrape_interval: 60s
     scrape_timeout: 30s
+    metrics_path: /service/metrics/prometheus
     static_configs:
     - targets: ["nexus:8081"]
     basic_auth:
