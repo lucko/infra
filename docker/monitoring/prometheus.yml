@@ -3,7 +3,6 @@ global:
 
 scrape_configs:
   - job_name: "prometheus"
-    scrape_interval: 5s
     static_configs:
     - targets: ["localhost:9090"]
 
@@ -30,6 +29,15 @@ scrape_configs:
   - job_name: "spark-metadata-api"
     static_configs:
     - targets: ["spark-metadata-api:3000"]
+
+  - job_name: "nexus"
+    scrape_interval: 60s
+    scrape_timeout: 30s
+    static_configs:
+    - targets: ["nexus:8081"]
+    basic_auth:
+      username: prometheus
+      password_file: /etc/prometheus/nexus_password_file
 
   - job_name: "pushgateway"
     honor_labels: true

@@ -12,10 +12,12 @@ services:
       - "bytebin_default"
       - "metadata-api_default"
       - "spark_default"
+      - "nexus_default"
     extra_hosts:
       - "node-exporter:host-gateway"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./.nexus_password:/etc/prometheus/nexus_password_file
       - data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
