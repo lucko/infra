@@ -25,9 +25,11 @@ services:
         https://paste.lucko.me=259200,
         https://pastebin.lucko.me=259200,
         https://pastes.dev=259200,
+        api.pastes.dev=43200,
         paste-netcat=43200,
         https://webui.adventure.kyori.net=129600,
         https://bytebin.lucko.me=259200
+      BYTEBIN_HTTP_HOSTALIASES: api.pastes.dev=pastes.dev
       BYTEBIN_RATELIMIT_APIKEYS: ${BYTEBIN_API_KEYS}
       BYTEBIN_CONTENT_MAXSIZE: 10 # mb
       BYTEBIN_STORAGE_S3: "true"
