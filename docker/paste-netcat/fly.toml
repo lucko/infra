@@ -1,0 +1,18 @@
+app = "paste-netcat"
+
+[build]
+  image = "ghcr.io/lucko/paste-netcat"
+
+[env]
+  PN_PORT = 3000
+  PN_API_POST_URL = "https://api.pastes.dev/post"
+  PN_USER_AGENT = "paste-netcat"
+  PN_POST_CONTENT_TYPE = "text/plain"
+  PN_FRONTEND_URL = "https://pastes.dev/"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = "1337"
