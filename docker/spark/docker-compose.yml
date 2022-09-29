@@ -18,8 +18,12 @@ services:
     restart: unless-stopped
     ports:
       - 127.0.0.1:4090:3000
+    networks:
+      - "default"
+      - "bytebin_default"
     environment:
       BYTEBIN_API_KEY: ${SPARKJSON_BYTEBIN_API_KEY}
+      BYTEBIN_URL: "http://bytebin:8080/"
 
   spark-thumbnail-service:
     image: ghcr.io/lucko/spark-thumbnail-service
@@ -29,4 +33,6 @@ services:
 
 networks:
   jenkins_default:
+    external: true
+  bytebin_default:
     external: true
