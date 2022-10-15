@@ -25,11 +25,24 @@ services:
       BYTEBIN_API_KEY: ${SPARKJSON_BYTEBIN_API_KEY}
       BYTEBIN_URL: "http://bytebin:8080/"
 
+  # local instance used by spark-thumbnail-service to
+  # avoid having to make requests to the cdn
+  # (also uses http only, so we can use http for bytebin too)
+  spark-viewer:
+    image: ghcr.io/lucko/spark-viewer
+    restart: unless-stopped
+
   spark-thumbnail-service:
     image: ghcr.io/lucko/spark-thumbnail-service
     restart: unless-stopped
     ports:
       - 127.0.0.1:4091:3000
+    networks:
+      - "default"
+      - "bytebin_default"
+    environment:
+      BYTEBIN_URL: 'http://bytebin:8080/'
+      SPARK_URL: 'http://spark-viewer:3000/'
 
 networks:
   jenkins_default:
