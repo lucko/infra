@@ -47,7 +47,7 @@ services:
     image: mazzolino/restic
     hostname: docker
     environment:
-      RUN_ON_STARTUP: "true"
+      RUN_ON_STARTUP: "false"
       PRUNE_CRON: "0 0 3 * * 1" # monday at 3am
       RESTIC_REPOSITORY: ${RESTIC_REPO}
       RESTIC_PASSWORD: ${RESTIC_PASSWORD}

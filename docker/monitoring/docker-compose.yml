@@ -58,6 +58,47 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
 
+  backup:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 0 2 * * 3" # wednesday at 2am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      RESTIC_BACKUP_SOURCES: /mnt/grafanadata
+      RESTIC_BACKUP_ARGS: >-
+        --tag docker-monitoring
+        --verbose
+      RESTIC_FORGET_ARGS: >-
+        --keep-last 4
+        --keep-weekly 4
+        --keep-monthly 4
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+      # send metrics about backup status/size/filecount to prometheus
+      POST_COMMANDS_SUCCESS: |-
+        restic stats --json > stats.json
+        apk add --no-cache jq
+        echo "restic_status 1" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_monitoring
+        echo "restic_total_size $$(cat stats.json | jq '.total_size')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_monitoring
+        echo "restic_total_file_count $$(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_monitoring
+      POST_COMMANDS_FAILURE: |-
+        echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_monitoring
+    volumes:
+      - grafana:/mnt/grafanadata:ro
+
+  backup-prune:
+    image: mazzolino/restic
+    hostname: docker
+    environment:
+      RUN_ON_STARTUP: "false"
+      PRUNE_CRON: "0 0 3 * * 3" # wednesday at 3am
+      RESTIC_REPOSITORY: ${RESTIC_REPO}
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
+      B2_ACCOUNT_ID: ${B2_ACCOUNT_ID}
+      B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
+
 volumes:
   data:
   grafana:
