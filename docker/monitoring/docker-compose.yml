@@ -10,7 +10,7 @@ services:
       - "default"
       - "bytesocks_default"
       - "bytebin_default"
-      - "metadata-api_default"
+      - "luckperms_default"
       - "spark_default"
       - "nexus_default"
     extra_hosts:
@@ -68,7 +68,7 @@ networks:
     external: true
   bytebin_default:
     external: true
-  metadata-api_default:
+  luckperms_default:
     external: true
   spark_default:
     external: true

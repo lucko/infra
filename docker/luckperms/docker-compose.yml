@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  metadata-api:
+    image: ghcr.io/luckperms/metadata-api
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4087:3000
+    networks:
+      - "default"
+      - "jenkins_default"
+    environment:
+      METADATA_API_METRICS: "true"
+      METADATA_API_JENKINS_URL: "http://jenkins:8080/"
+      METADATA_API_GITHUB_API_KEY: ${GITHUB_API_KEY}
+      METADATA_API_PATREON_API_KEY: ${PATREON_API_KEY}
+      METADATA_API_CROWDIN_API_KEY: ${CROWDIN_API_KEY}
+  
+  clippy:
+    image: ghcr.io/luckperms/clippy
+    restart: unless-stopped
+    volumes:
+      - "clippy_data:/opt/clippy/data"
+      - "clippy_logs:/opt/clippy/logs"
+    environment:
+      DISCORD_BOT_TOKEN: ${BOT_TOKEN}
+      DISCORD_STAFF_ROLES: staff,helpful
+      DISCORD_GUILD: 241667244927483904
+      DISCORD_PATREON_CHANNEL: 533266318854455308
+      DISCORD_PUNISHMENTS_CHANNEL: 468826437705531402
+      DISCORD_MEMBER_ROLE: 420316139986485250
+
+volumes:
+  clippy_data:
+    external: true
+  clippy_logs:
+    external: true
+
+networks:
+  jenkins_default:
+    external: true
