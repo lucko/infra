@@ -10,3 +10,5 @@ services:
     environment:
       BYTESOCKS_MISC_KEYLENGTH: 15
       BYTESOCKS_METRICS_ENABLED: "true"
+      BYTESOCKS_RATELIMIT_MSG_AMOUNT: 60 # messages
+      BYTESOCKS_RATELIMIT_MSG_PERIOD: 1 # minutes

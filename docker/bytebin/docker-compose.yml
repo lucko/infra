@@ -20,6 +20,7 @@ services:
       BYTEBIN_CONTENT_EXPIRY: 10080 # minutes
       BYTEBIN_CONTENT_EXPIRY_USERAGENTS: >-
         spark-plugin=129600,
+        spark-plugin/live=60,
         https://luckperms.net=60,
         luckperms/editor=60,
         https://paste.lucko.me=259200,
@@ -34,6 +35,7 @@ services:
       BYTEBIN_CONTENT_MAXSIZE: 10 # mb
       BYTEBIN_STORAGE_S3: "true"
       BYTEBIN_STORAGE_S3_BUCKET: ${BYTEBIN_STORAGE_S3_BUCKET}
+      BYTEBIN_STORAGE_S3_SIZE_THRESHOLD: 7000 # 7mb
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
