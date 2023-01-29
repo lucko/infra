@@ -44,3 +44,13 @@ scrape_configs:
     honor_labels: true
     static_configs:
     - targets: ["pushgateway:9091"]
+  
+  - job_name: "pi"
+    metrics_path: /federate
+    static_configs:
+    - targets: ["rpi.taildde49.ts.net:9090"]
+    honor_labels: true
+    params:
+      'match[]':
+        - '{job="blackbox"}'
+        - '{job="blackbox-http"}'
