@@ -28,6 +28,7 @@ services:
         https://pastes.dev=259200,
         api.pastes.dev=43200,
         paste-netcat=43200,
+        https://webui.advntr.dev=129600,
         https://webui.adventure.kyori.net=129600,
         https://bytebin.lucko.me=259200
       BYTEBIN_HTTP_HOSTALIASES: api.pastes.dev=pastes.dev
