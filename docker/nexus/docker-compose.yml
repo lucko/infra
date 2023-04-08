@@ -4,7 +4,7 @@ services:
   nexus:
     image: sonatype/nexus3
     environment:
-      INSTALL4J_ADD_VM_PARAMS: "-Xms200m -Xmx1000m -XX:MaxDirectMemorySize=1000m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+      INSTALL4J_ADD_VM_PARAMS: "-Xms200m -Xmx500m -XX:MaxDirectMemorySize=500m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
     ports:
       - 127.0.0.1:4082:8081
     volumes:

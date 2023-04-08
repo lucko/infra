@@ -4,7 +4,7 @@ services:
   jenkins:
     image: jenkins/jenkins:lts-jdk11
     environment:
-      JAVA_OPTS: "-Xmx1g"
+      JENKINS_JAVA_OPTS: "-Xmx500m"
     ports:
       - 127.0.0.1:4081:8080
     volumes:
