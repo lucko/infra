@@ -3,10 +3,11 @@ version: "3.8"
 services:
   nexus:
     image: sonatype/nexus3
+    platform: linux/amd64
     environment:
+      VIRTUAL_HOST: "nexus.lucko.me,repo.lucko.me,libraries.luckperms.net"
+      VIRTUAL_PORT: "8081"
       INSTALL4J_ADD_VM_PARAMS: "-Xms200m -Xmx500m -XX:MaxDirectMemorySize=500m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
-    ports:
-      - 127.0.0.1:4082:8081
     volumes:
       - data:/nexus-data
 
@@ -37,9 +38,6 @@ services:
         echo "restic_total_file_count $$(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_nexus
       POST_COMMANDS_FAILURE: |-
         echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_nexus
-    networks:
-      - "default"
-      - "monitoring_default"
     volumes:
       - data:/mnt/nexusdata:ro
 
@@ -58,5 +56,5 @@ volumes:
   data:
 
 networks:
-  monitoring_default:
-    external: true
+  default:
+    name: "services"

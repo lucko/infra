@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    ports:
+      - "443:443"
+    networks:
+      - "default"
+      - "services"
+    environment:
+      TRUST_DOWNSTREAM_PROXY: true
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./vhost.d/:/etc/nginx/vhost.d/"
+      - "/etc/nginx/certs/:/etc/nginx/certs/"
+      - "./conf.d/cloudflare_cert.conf:/etc/nginx/conf.d/cloudflare_cert.conf"
+      - "./conf.d/cloudflare_realip.conf:/etc/nginx/conf.d/cloudflare_realip.conf"
+      - "./network_internal.conf:/etc/nginx/network_internal.conf"
+
+networks:
+  default:
+    name: "proxy"
+  services:
+    name: "services"

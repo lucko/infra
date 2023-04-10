@@ -1,0 +1,26 @@
+- name: Setup hosts
+  hosts: all
+  roles:
+    - role: user-setup
+
+    - role: geerlingguy.security
+      vars:
+        security_fail2ban_enabled: false
+        security_ssh_allowed_users: [adm]
+        security_sudoers_passwordless: [adm]
+        security_autoupdate_reboot: false
+
+    - role: basic-setup
+
+    - role: geerlingguy.docker
+      vars:
+        docker_install_compose_plugin: true
+        docker_users: [adm]
+
+    - role: artis3n.tailscale
+      vars:
+        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_KEY') }}"
+        tailscale_args: "--ssh"
+      when: tailscale_authkey != ""
+
+    - role: ufw-setup

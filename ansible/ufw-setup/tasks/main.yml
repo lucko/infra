@@ -1,0 +1,44 @@
+---
+- name: Install ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+
+#- name: Get Cloudflare IPs
+#  ansible.builtin.set_fact:
+#    cloudflare_ipv4: "{{ lookup('url', 'https://www.cloudflare.com/ips-v4', wantlist=True) }}"
+#    cloudflare_ipv6: "{{ lookup('url', 'https://www.cloudflare.com/ips-v6', wantlist=True) }}"
+
+- name: Reset ufw
+  community.general.ufw:
+    state: reset
+  when: ufw_setup_reset
+
+- name: Allow tailscale inbound traffic
+  community.general.ufw:
+    rule: allow
+    interface: tailscale0
+    direction: in
+
+#- name: Allow cloudflare ipv4 inbound traffic
+#  community.general.ufw:
+#    rule: allow
+#    src: "{{ item }}"
+#    port: "443"
+#    proto: tcp
+#    comment: cloudflare
+#  loop: "{{ cloudflare_ipv4 }}"
+
+#- name: Allow cloudflare ipv6 inbound traffic
+#  community.general.ufw:
+#    rule: allow
+#    src: "{{ item }}"
+#    port: "443"
+#    proto: tcp
+#    comment: cloudflare
+#  loop: "{{ cloudflare_ipv6 }}"
+
+- name: Enable ufw
+  community.general.ufw:
+    state: enabled
+    logging: false

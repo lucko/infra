@@ -22,9 +22,9 @@ scrape_configs:
     static_configs:
     - targets: ["bytebin:8080"]
   
-  - job_name: "metadata-api"
+  - job_name: "luckperms-metadata-api"
     static_configs:
-    - targets: ["metadata-api:3000"]
+    - targets: ["luckperms-metadata-api:3000"]
   
   - job_name: "spark-metadata-api"
     static_configs:

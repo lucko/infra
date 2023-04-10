@@ -1,0 +1,6 @@
+---
+basic_setup_packages:
+  - curl
+  - htop
+  - tmux
+  - jq

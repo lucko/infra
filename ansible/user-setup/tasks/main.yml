@@ -1,0 +1,11 @@
+---
+- name: Create user
+  ansible.builtin.user:
+    name: "{{ user_setup_username }}"
+    shell: /bin/bash
+
+- name: Set authorized keys
+  ansible.posix.authorized_key:
+    user: "{{ user_setup_username }}"
+    state: present
+    key: "{{ lookup('url', 'https://lucko.me/id_ed25519.pub', split_lines=False) }}"

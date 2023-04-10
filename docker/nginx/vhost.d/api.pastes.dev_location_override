@@ -1,0 +1,7 @@
+location = / {
+    return 301 https://pastes.dev/;
+}
+
+location / {
+    proxy_pass http://api.pastes.dev;
+}

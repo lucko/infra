@@ -1,0 +1,1 @@
+rewrite /js/pl.js /js/plausible.js break;

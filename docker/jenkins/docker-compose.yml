@@ -4,9 +4,9 @@ services:
   jenkins:
     image: jenkins/jenkins:lts-jdk11
     environment:
+      VIRTUAL_HOST: "ci.lucko.me,download.luckperms.net"
+      VIRTUAL_PORT: "8080"
       JENKINS_JAVA_OPTS: "-Xmx500m"
-    ports:
-      - 127.0.0.1:4081:8080
     volumes:
       - data:/var/jenkins_home
 
@@ -43,9 +43,6 @@ services:
         echo "restic_total_file_count $$(cat stats.json | jq '.total_file_count')" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
       POST_COMMANDS_FAILURE: |-
         echo "restic_status 0" | curl --data-binary @- http://pushgateway:9091/metrics/job/backup_jenkins
-    networks:
-      - "default"
-      - "monitoring_default"
     volumes:
       - data:/mnt/jenkinsdata:ro
 
@@ -64,5 +61,5 @@ volumes:
   data:
 
 networks:
-  monitoring_default:
-    external: true
+  default:
+    name: "services"

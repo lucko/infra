@@ -4,15 +4,10 @@ services:
   prometheus:
     image: prom/prometheus
     restart: unless-stopped
-    ports:
-      - 127.0.0.1:3090:9090
-    networks:
-      - "default"
-      - "bytesocks_default"
-      - "bytebin_default"
-      - "luckperms_default"
-      - "spark_default"
-      - "nexus_default"
+    environment:
+      VIRTUAL_HOST: "prom.clover.local"
+      VIRTUAL_PORT: "9090"
+      NETWORK_ACCESS: "internal"
     extra_hosts:
       - "node-exporter:host-gateway"
     volumes:
@@ -33,9 +28,10 @@ services:
   grafana:
     image: grafana/grafana-oss
     restart: unless-stopped
-    ports:
-      - 127.0.0.1:3091:3000
     environment:
+      VIRTUAL_HOST: "grafana.clover.local"
+      VIRTUAL_PORT: "3000"
+      NETWORK_ACCESS: "internal"
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
       GF_USERS_ALLOW_SIGN_UP: "false"
@@ -105,13 +101,5 @@ volumes:
   grafana_config:
 
 networks:
-  bytesocks_default:
-    external: true
-  bytebin_default:
-    external: true
-  luckperms_default:
-    external: true
-  spark_default:
-    external: true
-  nexus_default:
-    external: true
+  default:
+    name: "services"

@@ -1,0 +1,7 @@
+location = / {
+    return 301 https://luckperms.net/;
+}
+
+location / {
+    proxy_pass http://libraries.luckperms.net/repository/maven-central/;
+}

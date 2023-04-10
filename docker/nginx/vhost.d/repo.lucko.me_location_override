@@ -1,0 +1,12 @@
+location = / {
+    return 200 'https://repo.lucko.me/\n======================\n\nThis URL is a shorthand version of https://nexus.lucko.me/repository/all/\n\nYou can use it in buildscript files instead of using the full path to the "all" repository.\n\nIf you want to browse the repository, go to https://nexus.lucko.me/';
+    add_header Content-Type text/plain;
+}
+
+location / {
+    proxy_pass http://repo.lucko.me/repository/all/;
+
+    sub_filter "http://nexus.lucko.me/" "https://nexus.lucko.me/";
+    sub_filter_once off;
+    add_header Content-Security-Policy upgrade-insecure-requests;
+}

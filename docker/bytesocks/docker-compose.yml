@@ -5,10 +5,14 @@ services:
     image: ghcr.io/lucko/bytesocks
     command: ["java", "-Xmx300M", "-XX:+UseG1GC", "-jar", "bytesocks.jar"]
     restart: unless-stopped
-    ports:
-      - 127.0.0.1:4089:8080
     environment:
+      VIRTUAL_HOST: "usersockets.luckperms.net,spark-usersockets.lucko.me"
+      VIRTUAL_PORT: "8080"
       BYTESOCKS_MISC_KEYLENGTH: 15
       BYTESOCKS_METRICS_ENABLED: "true"
       BYTESOCKS_RATELIMIT_MSG_AMOUNT: 60 # messages
       BYTESOCKS_RATELIMIT_MSG_PERIOD: 1 # minutes
+
+networks:
+  default:
+    name: "services"

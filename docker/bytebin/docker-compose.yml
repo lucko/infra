@@ -5,13 +5,13 @@ services:
     image: ghcr.io/lucko/bytebin
     command: ["java", "-Xmx500m", "-Xms300m", "-jar", "bytebin.jar"]
     restart: unless-stopped
-    ports:
-      - 127.0.0.1:4084:8080
     volumes:
       - data:/opt/bytebin/content
       - logs:/opt/bytebin/logs
       - db:/opt/bytebin/db
     environment:
+      VIRTUAL_HOST: "bytebin.lucko.me,spark-usercontent.lucko.me,usercontent.luckperms.net,api.pastes.dev"
+      VIRTUAL_PORT: "8080"
       BYTEBIN_METRICS_ENABLED: "true"
       BYTEBIN_MISC_KEYLENGTH: 10
       BYTEBIN_MISC_COREPOOLSIZE: 16
@@ -45,3 +45,7 @@ volumes:
   data: {}
   logs: {}
   db: {}
+
+networks:
+  default:
+    name: "services"
