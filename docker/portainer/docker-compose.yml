@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  portainer:
+    image: portainer/portainer-ce
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
+    environment:
+      VIRTUAL_HOST: "portainer.clover.local"
+      VIRTUAL_PORT: "9443"
+      NETWORK_ACCESS: "internal"
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: "services"
