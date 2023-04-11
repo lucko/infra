@@ -9,7 +9,7 @@ services:
       - data:/data
     environment:
       VIRTUAL_HOST: "portainer.clover.local"
-      VIRTUAL_PORT: "9443"
+      VIRTUAL_PORT: "9000"
       NETWORK_ACCESS: "internal"
 
 volumes:
