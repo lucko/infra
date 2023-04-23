@@ -16,7 +16,7 @@ scrape_configs:
 
   - job_name: "nginx"
     static_configs:
-    - targets: ["nginx-proxy:9113"]
+    - targets: ["nginx-exporter:9113"]
 
   - job_name: "bytesocks"
     static_configs:
