@@ -25,7 +25,7 @@ In the worst case (server dies), everything can be rebuilt relatively quickly wi
 
 1. Provision a new Linux server (virtual machine) running Debian/Ubuntu
 2. Clone this repository locally and run the `ansible/site.yml` Ansible playbook to setup the host machine
-   * The playbook will setup users install some basic packages (including Docker), and configure automatic package security updates
+   * The playbook will setup users, install some basic packages (including Docker), and configure automatic package security updates
    * The playbook also installs and configures Tailscale, and configures ufw to only allow SSH access using the VPN
 3. Clone this repository onto the host machine and start bringing up the Docker Compose projects in `docker/`
    * Start with `nginx`, then move onto other directories

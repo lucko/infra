@@ -13,11 +13,18 @@ services:
       DISABLE_ACCESS_LOGS: true
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "./vhost.d/:/etc/nginx/vhost.d/"
       - "/etc/nginx/certs/:/etc/nginx/certs/"
+      - "./vhost.d/:/etc/nginx/vhost.d/"
       - "./conf.d/cloudflare_cert.conf:/etc/nginx/conf.d/cloudflare_cert.conf"
       - "./conf.d/cloudflare_realip.conf:/etc/nginx/conf.d/cloudflare_realip.conf"
+      - "./conf.d/prometheus_exporter.conf:/etc/nginx/conf.d/prometheus_exporter.conf"
       - "./network_internal.conf:/etc/nginx/network_internal.conf"
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter
+    command: -nginx.scrape-uri=http://proxy:8080/stub_status
+    networks:
+      - "services"
 
 networks:
   default:
