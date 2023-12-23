@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  language-detection:
+    image: ghcr.io/lucko/paste-language-detection
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: "language-detection-service.pastes.dev"
+      VIRTUAL_PORT: "3000"
+      BYTEBIN_API_KEY: ${BYTEBIN_API_KEY}
+      BYTEBIN_URL: "http://bytebin:8080/"
+
+networks:
+  default:
+    name: "services"
