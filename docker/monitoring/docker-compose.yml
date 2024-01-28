@@ -55,12 +55,6 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-  
-  cloudflare-exporter:
-    image: ghcr.io/lablabs/cloudflare_exporter
-    restart: unless-stopped
-    environment:
-      CF_API_TOKEN: ${CF_API_TOKEN}
 
   backup:
     image: mazzolino/restic

@@ -58,13 +58,7 @@ scrape_configs:
     honor_labels: true
     static_configs:
     - targets: ["pushgateway:9091"]
-
-  - job_name: "cloudflare"
-    scrape_interval: 300s
-    scrape_timeout: 30s
-    static_configs:
-    - targets: ["cloudflare-exporter:8080"]
-
+  
   - job_name: "pi"
     metrics_path: /federate
     static_configs:
