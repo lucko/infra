@@ -44,6 +44,16 @@ scrape_configs:
       username: prometheus
       password_file: /etc/prometheus/nexus_password_file
 
+  - job_name: "jenkins"
+    scrape_interval: 120s
+    scrape_timeout: 30s
+    metrics_path: /prometheus/
+    static_configs:
+    - targets: ["jenkins:8080"]
+    basic_auth:
+      username: prometheus_user
+      password_file: /etc/prometheus/jenkins_password_file
+
   - job_name: "pushgateway"
     honor_labels: true
     static_configs:

@@ -13,6 +13,7 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./nexus_password:/etc/prometheus/nexus_password_file
+      - ./jenkins_password:/etc/prometheus/jenkins_password_file
       - data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
