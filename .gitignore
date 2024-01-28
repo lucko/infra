@@ -1,3 +1,4 @@
 .env
 *.env
 docker/monitoring/nexus_password
+docker/monitoring/jenkins_password
