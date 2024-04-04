@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   portainer:
     image: portainer/portainer-ce
@@ -18,3 +16,4 @@ volumes:
 networks:
   default:
     name: "services"
+    external: true

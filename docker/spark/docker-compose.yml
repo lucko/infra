@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   spark-metadata-api:
     image: ghcr.io/lucko/spark-downloads-api
@@ -38,3 +36,4 @@ services:
 networks:
   default:
     name: "services"
+    external: true

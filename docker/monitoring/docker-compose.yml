@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   prometheus:
     image: prom/prometheus
@@ -105,3 +103,4 @@ volumes:
 networks:
   default:
     name: "services"
+    external: true

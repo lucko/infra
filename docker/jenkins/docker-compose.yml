@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   jenkins:
     image: jenkins/jenkins:lts-jdk17
@@ -63,3 +61,4 @@ volumes:
 networks:
   default:
     name: "services"
+    external: true

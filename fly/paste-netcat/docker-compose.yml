@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   paste-netcat:
     image: ghcr.io/lucko/paste-netcat

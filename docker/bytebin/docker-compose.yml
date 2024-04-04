@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   bytebin:
     image: ghcr.io/lucko/bytebin
@@ -51,3 +49,4 @@ volumes:
 networks:
   default:
     name: "services"
+    external: true

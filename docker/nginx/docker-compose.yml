@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   proxy:
     image: nginxproxy/nginx-proxy:alpine
