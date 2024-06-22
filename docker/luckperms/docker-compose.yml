@@ -10,6 +10,8 @@ services:
       METADATA_API_GITHUB_API_KEY: ${GITHUB_API_KEY}
       METADATA_API_PATREON_API_KEY: ${PATREON_API_KEY}
       METADATA_API_CROWDIN_API_KEY: ${CROWDIN_API_KEY}
+    volumes:
+      - "metadata-api-translations-cache:/app/translations"
   
   clippy:
     image: ghcr.io/luckperms/clippy
@@ -28,6 +30,7 @@ services:
 volumes:
   clippy_data:
   clippy_logs:
+  metadata-api-translations-cache:
 
 networks:
   default:
