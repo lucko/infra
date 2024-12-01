@@ -1,12 +1,26 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk17
+    image: jenkins/jenkins:lts
     environment:
       VIRTUAL_HOST: "ci.lucko.me,download.luckperms.net"
       VIRTUAL_PORT: "8080"
       JENKINS_JAVA_OPTS: "-Xmx500m"
     volumes:
       - data:/var/jenkins_home
+    networks:
+      - "default"
+      - "jenkins"
+
+  jenkins-agent01:
+    image: jenkins/ssh-agent:jdk21
+    environment:
+      JENKINS_AGENT_SSH_PUBKEY: ${JENKINS_AGENT_SSH_PUBLIC_KEY}
+    volumes:
+      - maven-cache:/home/jenkins/.m2
+      - gradle-cache:/home/jenkins/.gradle
+    networks:
+      - "jenkins"
+    cpus: 2
 
   backup:
     image: mazzolino/restic
@@ -57,8 +71,13 @@ services:
 
 volumes:
   data:
+  maven-cache:
+  gradle-cache:
 
 networks:
   default:
     name: "services"
+    external: true
+  jenkins:
+    name: "jenkins"
     external: true
