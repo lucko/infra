@@ -2,3 +2,5 @@
 *.env
 docker/monitoring/nexus_password
 docker/monitoring/jenkins_password
+docker/jenkins/jenkins_agent_key
+docker/jenkins/jenkins_agent_key.pub

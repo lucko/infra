@@ -7,7 +7,7 @@ services:
       VIRTUAL_PORT: "9090"
       NETWORK_ACCESS: "internal"
     extra_hosts:
-      - "node-exporter:host-gateway"
+      - "node-exporter:172.17.0.1"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./nexus_password:/etc/prometheus/nexus_password_file
