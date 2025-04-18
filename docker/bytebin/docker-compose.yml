@@ -36,6 +36,7 @@ services:
       BYTEBIN_STORAGE_S3_BUCKET: ${BYTEBIN_STORAGE_S3_BUCKET}
       BYTEBIN_STORAGE_S3_EXPIRY_THRESHOLD: 14400 # minutes (10 days, use s3 if greater than)
       BYTEBIN_STORAGE_S3_SIZE_THRESHOLD: 5000 # 5mb, use s3 if greater than
+      BYTEBIN_LOGGING_HTTP_URI: "http://bytebin-log-handler:8080/post"
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION}
