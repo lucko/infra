@@ -31,6 +31,7 @@ services:
       VIRTUAL_HOST: "spark-thumbnail-service.lucko.me"
       VIRTUAL_PORT: "3000"
       BYTEBIN_URL: 'http://bytebin:8080'
+      BYTEBIN_API_KEY: ${SPARKTHUMBNAIL_BYTEBIN_API_KEY}
       SPARK_URL: 'http://spark-viewer:3000/'
 
 networks:
