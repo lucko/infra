@@ -11,7 +11,7 @@ services:
       VIRTUAL_HOST: "bytebin.lucko.me,spark-usercontent.lucko.me,usercontent.luckperms.net,api.pastes.dev"
       VIRTUAL_PORT: "8080"
       BYTEBIN_METRICS_ENABLED: "true"
-      BYTEBIN_MISC_KEYLENGTH: 12
+      BYTEBIN_MISC_KEYLENGTH: 10
       BYTEBIN_MISC_COREPOOLSIZE: 16
       BYTEBIN_CACHE_EXPIRY: 20 # minutes
       BYTEBIN_CACHE_MAXSIZE: 200 # mb
