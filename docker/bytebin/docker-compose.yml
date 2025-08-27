@@ -1,7 +1,7 @@
 services:
   bytebin:
     image: ghcr.io/lucko/bytebin
-    command: ["java", "-Xmx800m", "-Xms500m", "-jar", "bytebin.jar"]
+    command: ["java", "-Xmx1000m", "-Xms500m", "-jar", "bytebin.jar"]
     restart: unless-stopped
     volumes:
       - data:/opt/bytebin/content
