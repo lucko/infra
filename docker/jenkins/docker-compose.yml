@@ -11,17 +11,6 @@ services:
       - "default"
       - "jenkins"
 
-  jenkins-agent01:
-    image: jenkins/ssh-agent:jdk21
-    environment:
-      JENKINS_AGENT_SSH_PUBKEY: ${JENKINS_AGENT_SSH_PUBLIC_KEY}
-    volumes:
-      - maven-cache:/home/jenkins/.m2
-      - gradle-cache:/home/jenkins/.gradle
-    networks:
-      - "jenkins"
-    cpus: 2
-
   backup:
     image: mazzolino/restic
     hostname: docker
