@@ -5,7 +5,7 @@ services:
     environment:
       VIRTUAL_HOST: "nexus.lucko.me,repo.lucko.me,libraries.luckperms.net"
       VIRTUAL_PORT: "8081"
-      INSTALL4J_ADD_VM_PARAMS: "-Xms200m -Xmx500m -XX:MaxDirectMemorySize=500m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
+      INSTALL4J_ADD_VM_PARAMS: "-Xms256m -Xmx512m -XX:MaxDirectMemorySize=512m -Djava.util.prefs.userRoot=/nexus-data/javaprefs"
     volumes:
       - data:/nexus-data
 

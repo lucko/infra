@@ -1,6 +1,6 @@
 services:
   prometheus:
-    image: prom/prometheus
+    image: victoriametrics/victoria-metrics
     restart: unless-stopped
     environment:
       VIRTUAL_HOST: "prom.clover.local"
@@ -12,14 +12,12 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - ./nexus_password:/etc/prometheus/nexus_password_file
       - ./jenkins_password:/etc/prometheus/jenkins_password_file
-      - data:/prometheus
+      - metrics_data:/victoria-metrics-data
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--storage.tsdb.retention.time=365d'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
+      - "-promscrape.config=/etc/prometheus/prometheus.yml"
+      - "-storageDataPath=/victoria-metrics-data"
+      - "-retentionPeriod=1y"
+      - "-httpListenAddr=:9090"
 
   pushgateway:
     image: prom/pushgateway
@@ -35,6 +33,7 @@ services:
       GF_SECURITY_ADMIN_USER: ${GRAFANA_USER}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
       GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_PANELS_ENABLE_ALPHA: "true"
     volumes:
       - grafana:/var/lib/grafana
       - grafana_config:/etc/grafana/provisioning/
@@ -96,7 +95,7 @@ services:
       B2_ACCOUNT_KEY: ${B2_ACCOUNT_KEY}
 
 volumes:
-  data:
+  metrics_data:
   grafana:
   grafana_config:
 
